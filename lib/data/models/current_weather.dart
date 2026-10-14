@@ -1,3 +1,6 @@
+import '../../core/utils/weather_interpreter.dart';
+import 'weather_condition.dart';
+
 /// Represents current meteorological conditions parsed from the Open-Meteo API.
 class CurrentWeather {
   final String time;
@@ -32,14 +35,18 @@ class CurrentWeather {
     this.uvIndex,
   });
 
+  WeatherCondition get condition =>
+      WeatherInterpreter.interpret(weatherCode, isDay: isDay);
+
+  DateTime get dateTime => DateTime.tryParse(time) ?? DateTime.now();
+
   factory CurrentWeather.fromJson(Map<String, dynamic> json) {
     return CurrentWeather(
       time: json['time'] as String? ?? '',
       temperature: (json['temperature_2m'] as num?)?.toDouble() ?? 0.0,
       apparentTemperature:
           (json['apparent_temperature'] as num?)?.toDouble() ?? 0.0,
-      relativeHumidity:
-          (json['relative_humidity_2m'] as num?)?.toInt() ?? 0,
+      relativeHumidity: (json['relative_humidity_2m'] as num?)?.toInt() ?? 0,
       isDay: (json['is_day'] as num?)?.toInt() == 1,
       precipitation: (json['precipitation'] as num?)?.toDouble() ?? 0.0,
       rain: (json['rain'] as num?)?.toDouble() ?? 0.0,
@@ -49,8 +56,7 @@ class CurrentWeather {
       surfacePressure:
           (json['surface_pressure'] as num?)?.toDouble() ?? 1013.25,
       windSpeed: (json['wind_speed_10m'] as num?)?.toDouble() ?? 0.0,
-      windDirection:
-          (json['wind_direction_10m'] as num?)?.toDouble() ?? 0.0,
+      windDirection: (json['wind_direction_10m'] as num?)?.toDouble() ?? 0.0,
       uvIndex: (json['uv_index'] as num?)?.toDouble(),
     );
   }
@@ -74,3 +80,4 @@ class CurrentWeather {
     };
   }
 }
+

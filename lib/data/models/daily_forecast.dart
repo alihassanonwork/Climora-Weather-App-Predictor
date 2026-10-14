@@ -1,3 +1,6 @@
+import '../../core/utils/weather_interpreter.dart';
+import 'weather_condition.dart';
+
 /// Single calendar day forecast model.
 class DailyForecastDay {
   final String date;
@@ -9,6 +12,7 @@ class DailyForecastDay {
   final double precipitationSum;
   final int? precipitationProbabilityMax;
   final double maxWindSpeed;
+  final double? uvIndexMax;
 
   const DailyForecastDay({
     required this.date,
@@ -20,7 +24,20 @@ class DailyForecastDay {
     required this.precipitationSum,
     this.precipitationProbabilityMax,
     required this.maxWindSpeed,
+    this.uvIndexMax,
   });
+
+  DateTime get dateTime => DateTime.tryParse(date) ?? DateTime.now();
+  DateTime? get sunriseDateTime =>
+      sunrise != null ? DateTime.tryParse(sunrise!) : null;
+  DateTime? get sunsetDateTime =>
+      sunset != null ? DateTime.tryParse(sunset!) : null;
+
+  double get temperatureMax => maxTemp;
+  double get temperatureMin => minTemp;
+  double get windSpeedMax => maxWindSpeed;
+  WeatherCondition get condition =>
+      WeatherInterpreter.interpret(weatherCode, isDay: true);
 
   factory DailyForecastDay.fromJson(Map<String, dynamic> json) {
     return DailyForecastDay(
@@ -30,11 +47,11 @@ class DailyForecastDay {
       minTemp: (json['minTemp'] as num?)?.toDouble() ?? 0.0,
       sunrise: json['sunrise'] as String?,
       sunset: json['sunset'] as String?,
-      precipitationSum:
-          (json['precipitationSum'] as num?)?.toDouble() ?? 0.0,
+      precipitationSum: (json['precipitationSum'] as num?)?.toDouble() ?? 0.0,
       precipitationProbabilityMax:
           (json['precipitationProbabilityMax'] as num?)?.toInt(),
       maxWindSpeed: (json['maxWindSpeed'] as num?)?.toDouble() ?? 0.0,
+      uvIndexMax: (json['uvIndexMax'] as num?)?.toDouble(),
     );
   }
 
@@ -49,6 +66,7 @@ class DailyForecastDay {
       'precipitationSum': precipitationSum,
       'precipitationProbabilityMax': precipitationProbabilityMax,
       'maxWindSpeed': maxWindSpeed,
+      'uvIndexMax': uvIndexMax,
     };
   }
 }
@@ -67,35 +85,31 @@ class DailyForecast {
     final sunrises = (json['sunrise'] as List?)?.cast<String>() ?? [];
     final sunsets = (json['sunset'] as List?)?.cast<String>() ?? [];
     final precipSums = json['precipitation_sum'] as List? ?? [];
-    final precipProbs =
-        json['precipitation_probability_max'] as List? ?? [];
+    final precipProbs = json['precipitation_probability_max'] as List? ?? [];
     final maxWindSpeeds = json['wind_speed_10m_max'] as List? ?? [];
+    final uvMaxs = json['uv_index_max'] as List? ?? [];
 
     final list = <DailyForecastDay>[];
     for (int i = 0; i < times.length; i++) {
       list.add(
         DailyForecastDay(
           date: times[i],
-          weatherCode: i < weatherCodes.length
-              ? (weatherCodes[i] as num).toInt()
-              : 0,
-          maxTemp: i < maxTemps.length
-              ? (maxTemps[i] as num).toDouble()
-              : 0.0,
-          minTemp: i < minTemps.length
-              ? (minTemps[i] as num).toDouble()
-              : 0.0,
+          weatherCode:
+              i < weatherCodes.length ? (weatherCodes[i] as num).toInt() : 0,
+          maxTemp: i < maxTemps.length ? (maxTemps[i] as num).toDouble() : 0.0,
+          minTemp: i < minTemps.length ? (minTemps[i] as num).toDouble() : 0.0,
           sunrise: i < sunrises.length ? sunrises[i] : null,
           sunset: i < sunsets.length ? sunsets[i] : null,
-          precipitationSum: i < precipSums.length
-              ? (precipSums[i] as num).toDouble()
-              : 0.0,
-          precipitationProbabilityMax: i < precipProbs.length
-              ? (precipProbs[i] as num?)?.toInt()
-              : null,
-          maxWindSpeed: i < maxWindSpeeds.length
-              ? (maxWindSpeeds[i] as num).toDouble()
-              : 0.0,
+          precipitationSum:
+              i < precipSums.length ? (precipSums[i] as num).toDouble() : 0.0,
+          precipitationProbabilityMax:
+              i < precipProbs.length ? (precipProbs[i] as num?)?.toInt() : null,
+          maxWindSpeed:
+              i < maxWindSpeeds.length
+                  ? (maxWindSpeeds[i] as num).toDouble()
+                  : 0.0,
+          uvIndexMax:
+              i < uvMaxs.length ? (uvMaxs[i] as num?)?.toDouble() : null,
         ),
       );
     }
@@ -106,16 +120,15 @@ class DailyForecast {
   factory DailyForecast.fromJson(Map<String, dynamic> json) {
     final rawDays = json['days'] as List? ?? [];
     return DailyForecast(
-      days: rawDays
-          .map((e) => DailyForecastDay.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      days:
+          rawDays
+              .map((e) => DailyForecastDay.fromJson(e as Map<String, dynamic>))
+              .toList(),
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'days': days.map((e) => e.toJson()).toList(),
-    };
+    return {'days': days.map((e) => e.toJson()).toList()};
   }
 
   /// Returns 5 calendar days of forecast starting from today.
@@ -123,3 +136,4 @@ class DailyForecast {
     return days.take(5).toList();
   }
 }
+

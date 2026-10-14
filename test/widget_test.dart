@@ -64,8 +64,9 @@ void main() {
   );
 
   group('Climora Widget Tests', () {
-    testWidgets('ClimoraErrorView renders message and responds to retry tap',
-        (tester) async {
+    testWidgets('ClimoraErrorView renders message and responds to retry tap', (
+      tester,
+    ) async {
       bool retried = false;
 
       await tester.pumpWidget(
@@ -91,8 +92,9 @@ void main() {
       expect(retried, isTrue);
     });
 
-    testWidgets('ClimoraEmptyView displays title and triggers callback',
-        (tester) async {
+    testWidgets('ClimoraEmptyView displays title and triggers callback', (
+      tester,
+    ) async {
       bool actionTriggered = false;
 
       await tester.pumpWidget(
@@ -122,15 +124,14 @@ void main() {
       expect(actionTriggered, isTrue);
     });
 
-    testWidgets('WeatherHero displays temperature and city name',
-        (tester) async {
+    testWidgets('WeatherHero displays temperature and city name', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         ProviderScope(
           child: MaterialApp(
             theme: ClimoraTheme.lightTheme,
-            home: Scaffold(
-              body: WeatherHero(weatherData: testWeatherData),
-            ),
+            home: Scaffold(body: WeatherHero(weatherData: testWeatherData)),
           ),
         ),
       );
@@ -141,8 +142,9 @@ void main() {
       expect(find.text('°C'), findsOneWidget);
     });
 
-    testWidgets('MetricsGrid displays wind, humidity, and pressure cards',
-        (tester) async {
+    testWidgets('MetricsGrid displays wind, humidity, and pressure cards', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         ProviderScope(
           child: MaterialApp(

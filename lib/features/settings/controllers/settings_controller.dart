@@ -3,7 +3,9 @@ import '../../../data/models/user_settings.dart';
 import '../../../data/services/storage_service.dart';
 
 final storageServiceProvider = Provider<StorageService>((ref) {
-  throw UnimplementedError('StorageService must be overridden in ProviderScope');
+  throw UnimplementedError(
+    'StorageService must be overridden in ProviderScope',
+  );
 });
 
 class SettingsController extends Notifier<UserSettings> {

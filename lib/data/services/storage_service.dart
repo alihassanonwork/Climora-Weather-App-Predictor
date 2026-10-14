@@ -43,8 +43,10 @@ class StorageService {
     }
     try {
       return list
-          .map((item) =>
-              CityLocation.fromJson(jsonDecode(item) as Map<String, dynamic>))
+          .map(
+            (item) =>
+                CityLocation.fromJson(jsonDecode(item) as Map<String, dynamic>),
+          )
           .map((city) => city.copyWith(isFavorite: true))
           .toList();
     } catch (_) {
@@ -53,9 +55,10 @@ class StorageService {
   }
 
   Future<bool> saveFavoriteCities(List<CityLocation> cities) {
-    final list = cities
-        .map((c) => jsonEncode(c.copyWith(isFavorite: true).toJson()))
-        .toList();
+    final list =
+        cities
+            .map((c) => jsonEncode(c.copyWith(isFavorite: true).toJson()))
+            .toList();
     return _prefs.setStringList(AppConstants.keyFavoriteCities, list);
   }
 
@@ -84,8 +87,10 @@ class StorageService {
     if (list == null) return [];
     try {
       return list
-          .map((item) =>
-              CityLocation.fromJson(jsonDecode(item) as Map<String, dynamic>))
+          .map(
+            (item) =>
+                CityLocation.fromJson(jsonDecode(item) as Map<String, dynamic>),
+          )
           .toList();
     } catch (_) {
       return [];
@@ -125,8 +130,7 @@ class StorageService {
   }
 
   // --- Weather Data Cache ---
-  String _cacheKey(CityLocation city) =>
-      '_';
+  String _cacheKey(CityLocation city) => '_';
 
   WeatherData? getCachedWeather(CityLocation city) {
     final key = _cacheKey(city);

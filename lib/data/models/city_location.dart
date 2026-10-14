@@ -9,6 +9,7 @@ class CityLocation {
   final String? countryCode;
   final String? timezone;
   final bool isFavorite;
+  final bool isCurrentLocation;
 
   const CityLocation({
     required this.id,
@@ -20,6 +21,7 @@ class CityLocation {
     this.countryCode,
     this.timezone,
     this.isFavorite = false,
+    this.isCurrentLocation = false,
   });
 
   /// Readable display label e.g. "Tokyo, Japan" or "Springfield, Illinois, United States"
@@ -34,6 +36,8 @@ class CityLocation {
     return parts.join(', ');
   }
 
+  String get subTitle => displaySubtitle;
+
   CityLocation copyWith({
     int? id,
     String? name,
@@ -44,6 +48,7 @@ class CityLocation {
     String? countryCode,
     String? timezone,
     bool? isFavorite,
+    bool? isCurrentLocation,
   }) {
     return CityLocation(
       id: id ?? this.id,
@@ -55,6 +60,7 @@ class CityLocation {
       countryCode: countryCode ?? this.countryCode,
       timezone: timezone ?? this.timezone,
       isFavorite: isFavorite ?? this.isFavorite,
+      isCurrentLocation: isCurrentLocation ?? this.isCurrentLocation,
     );
   }
 
@@ -69,6 +75,7 @@ class CityLocation {
       'country_code': countryCode,
       'timezone': timezone,
       'isFavorite': isFavorite,
+      'isCurrentLocation': isCurrentLocation,
     };
   }
 
@@ -82,10 +89,10 @@ class CityLocation {
       longitude: (json['longitude'] as num).toDouble(),
       country: json['country'] as String?,
       admin1: json['admin1'] as String?,
-      countryCode:
-          (json['country_code'] ?? json['countryCode']) as String?,
+      countryCode: (json['country_code'] ?? json['countryCode']) as String?,
       timezone: json['timezone'] as String?,
       isFavorite: json['isFavorite'] as bool? ?? false,
+      isCurrentLocation: json['isCurrentLocation'] as bool? ?? false,
     );
   }
 
@@ -101,3 +108,4 @@ class CityLocation {
   @override
   int get hashCode => id.hashCode ^ latitude.hashCode ^ longitude.hashCode;
 }
+

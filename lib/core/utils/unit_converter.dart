@@ -23,7 +23,7 @@ class UnitConverter {
     if (celsius == null) return '--';
     final converted = convertTemperature(celsius, targetUnit);
     final formatted = converted.toStringAsFixed(fractionDigits);
-    return includeUnit ? '\' : formatted;
+    return includeUnit ? '$formatted${targetUnit.symbol}' : formatted;
   }
 
   // --- Wind Speed Conversion (Base: km/h) ---
@@ -46,8 +46,14 @@ class UnitConverter {
     if (kmh == null) return '--';
     final converted = convertWindSpeed(kmh, targetUnit);
     final formatted = converted.toStringAsFixed(1);
-    return includeUnit ? '\ ' : formatted;
+    return includeUnit ? '$formatted ${targetUnit.symbol}' : formatted;
   }
+
+  static String formatWind(
+    double? kmh,
+    WindSpeedUnit targetUnit, {
+    bool includeUnit = true,
+  }) => formatWindSpeed(kmh, targetUnit, includeUnit: includeUnit);
 
   // --- Pressure Conversion (Base: hPa) ---
   static double convertPressure(double hPa, PressureUnit targetUnit) {
@@ -70,7 +76,7 @@ class UnitConverter {
     final converted = convertPressure(hPa, targetUnit);
     final fractionDigits = targetUnit == PressureUnit.inHg ? 2 : 0;
     final formatted = converted.toStringAsFixed(fractionDigits);
-    return includeUnit ? '\ ' : formatted;
+    return includeUnit ? '$formatted ${targetUnit.symbol}' : formatted;
   }
 
   // --- Precipitation Conversion (Base: mm) ---
@@ -92,8 +98,14 @@ class UnitConverter {
     final converted = convertPrecipitation(mm, targetUnit);
     final fractionDigits = targetUnit == PrecipitationUnit.inch ? 2 : 1;
     final formatted = converted.toStringAsFixed(fractionDigits);
-    return includeUnit ? '\ ' : formatted;
+    return includeUnit ? '$formatted ${targetUnit.symbol}' : formatted;
   }
+
+  static String formatRain(
+    double? mm,
+    PrecipitationUnit targetUnit, {
+    bool includeUnit = true,
+  }) => formatPrecipitation(mm, targetUnit, includeUnit: includeUnit);
 
   // --- Wind Direction to Compass Rose (0-360) ---
   static String formatWindDirection(double? degrees) {
@@ -114,9 +126,10 @@ class UnitConverter {
       'W',
       'WNW',
       'NW',
-      'NNW'
+      'NNW',
     ];
     final index = ((degrees + 11.25) % 360 / 22.5).floor();
     return directions[index % 16];
   }
 }
+

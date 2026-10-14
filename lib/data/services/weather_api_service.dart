@@ -50,16 +50,17 @@ class WeatherApiService {
         'precipitation_sum',
         'precipitation_probability_max',
         'wind_speed_10m_max',
+        'uv_index_max',
       ].join(','),
       'timezone': 'auto',
     };
 
-    final uri = Uri.parse(AppConfig.weatherBaseUrl)
-        .replace(queryParameters: queryParameters);
+    final uri = Uri.parse(
+      AppConfig.weatherBaseUrl,
+    ).replace(queryParameters: queryParameters);
 
     try {
-      final response =
-          await _client.get(uri).timeout(AppConfig.apiTimeout);
+      final response = await _client.get(uri).timeout(AppConfig.apiTimeout);
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> json =
@@ -79,10 +80,10 @@ class WeatherApiService {
         'Weather request timed out. Please check your connection and try again.',
       );
     } on FormatException catch (e) {
-      throw ApiException('Malformed response received: ');
+      throw ApiException('Malformed response received: $e');
     } catch (e) {
       if (e is AppException) rethrow;
-      throw ApiException('An unexpected network error occurred: ');
+      throw ApiException('An unexpected network error occurred: $e');
     }
   }
 
@@ -90,3 +91,4 @@ class WeatherApiService {
     _client.close();
   }
 }
+

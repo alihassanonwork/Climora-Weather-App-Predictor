@@ -19,10 +19,10 @@ class WeatherRepository {
     required GeocodingApiService geocodingApiService,
     required LocationService locationService,
     required StorageService storageService,
-  })  : _weatherApiService = weatherApiService,
-        _geocodingApiService = geocodingApiService,
-        _locationService = locationService,
-        _storageService = storageService;
+  }) : _weatherApiService = weatherApiService,
+       _geocodingApiService = geocodingApiService,
+       _locationService = locationService,
+       _storageService = storageService;
 
   /// Retrieves weather for the given city, respecting cache freshness unless [forceRefresh] is true.
   Future<WeatherData> getWeather(

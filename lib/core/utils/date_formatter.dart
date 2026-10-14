@@ -27,15 +27,34 @@ class DateFormatter {
     return _fullDateFormat.format(dateTime);
   }
 
+  /// Formats a DateTime or ISO string for time (e.g. "7:22 AM").
+  static String formatTime(DateTime? dateTime) {
+    if (dateTime == null) return '--:--';
+    return _timeFormat.format(dateTime);
+  }
+
+  /// Formats an hour from DateTime (e.g. "3 PM").
+  static String formatHour(DateTime dateTime) {
+    return _hourFormat.format(dateTime);
+  }
+
+  /// Formats weekday name (e.g. "Wed").
+  static String formatWeekday(DateTime dateTime) {
+    return _dayOfWeekFormat.format(dateTime);
+  }
+
   /// Formats for daily forecast lists (e.g. "Today", "Tomorrow", "Thu, Oct 16").
   static String formatDayLabel(String isoDateString, {bool isToday = false}) {
     if (isToday) return 'Today';
     try {
       final dt = DateTime.parse(isoDateString);
       final now = DateTime.now();
-      final diff = DateTime(dt.year, dt.month, dt.day)
-          .difference(DateTime(now.year, now.month, now.day))
-          .inDays;
+      final diff =
+          DateTime(
+            dt.year,
+            dt.month,
+            dt.day,
+          ).difference(DateTime(now.year, now.month, now.day)).inDays;
 
       if (diff == 0) return 'Today';
       if (diff == 1) return 'Tomorrow';
@@ -47,13 +66,17 @@ class DateFormatter {
   }
 
   /// Formats short date (e.g. "Oct 16").
-  static String formatShortDate(String isoDateString) {
-    try {
-      final dt = DateTime.parse(isoDateString);
-      return _shortDateFormat.format(dt);
-    } catch (_) {
-      return isoDateString;
+  static String formatShortDate(dynamic date) {
+    if (date is DateTime) return _shortDateFormat.format(date);
+    if (date is String) {
+      try {
+        final dt = DateTime.parse(date);
+        return _shortDateFormat.format(dt);
+      } catch (_) {
+        return date;
+      }
     }
+    return '--';
   }
 
   /// Formats hourly timeline item (e.g. "Now", "3 PM", "11 AM").
@@ -83,3 +106,4 @@ class DateFormatter {
     }
   }
 }
+

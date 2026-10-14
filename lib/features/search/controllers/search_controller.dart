@@ -26,8 +26,8 @@ class RecentSearchesNotifier extends Notifier<List<CityLocation>> {
 
 final recentSearchesProvider =
     NotifierProvider<RecentSearchesNotifier, List<CityLocation>>(
-  RecentSearchesNotifier.new,
-);
+      RecentSearchesNotifier.new,
+    );
 
 class SearchState {
   final String query;
@@ -109,5 +109,5 @@ class CitySearchController extends Notifier<SearchState> {
 
 final citySearchControllerProvider =
     NotifierProvider<CitySearchController, SearchState>(
-  CitySearchController.new,
-);
+      CitySearchController.new,
+    );

@@ -60,36 +60,39 @@ void main() {
       expect(hourly.items[1].weatherCode, 2);
     });
 
-    test('DailyForecast correctly parses array structure and computes 5-day', () {
-      final json = {
-        'time': [
-          '2026-10-14',
-          '2026-10-15',
-          '2026-10-16',
-          '2026-10-17',
-          '2026-10-18',
-          '2026-10-19',
-          '2026-10-20',
-        ],
-        'weather_code': [1, 2, 3, 61, 80, 0, 1],
-        'temperature_2m_max': [20.0, 21.0, 19.5, 18.0, 17.5, 22.0, 23.0],
-        'temperature_2m_min': [10.0, 11.0, 9.5, 8.0, 8.5, 11.0, 12.0],
-        'sunrise': ['2026-10-14T07:00', '2026-10-15T07:01'],
-        'sunset': ['2026-10-14T18:00', '2026-10-15T17:59'],
-        'precipitation_sum': [0.0, 0.0, 2.5, 5.0, 1.2, 0.0, 0.0],
-        'precipitation_probability_max': [0, 10, 60, 80, 40, 0, 0],
-        'wind_speed_10m_max': [15.0, 18.0, 22.0, 25.0, 16.0, 12.0, 14.0],
-      };
+    test(
+      'DailyForecast correctly parses array structure and computes 5-day',
+      () {
+        final json = {
+          'time': [
+            '2026-10-14',
+            '2026-10-15',
+            '2026-10-16',
+            '2026-10-17',
+            '2026-10-18',
+            '2026-10-19',
+            '2026-10-20',
+          ],
+          'weather_code': [1, 2, 3, 61, 80, 0, 1],
+          'temperature_2m_max': [20.0, 21.0, 19.5, 18.0, 17.5, 22.0, 23.0],
+          'temperature_2m_min': [10.0, 11.0, 9.5, 8.0, 8.5, 11.0, 12.0],
+          'sunrise': ['2026-10-14T07:00', '2026-10-15T07:01'],
+          'sunset': ['2026-10-14T18:00', '2026-10-15T17:59'],
+          'precipitation_sum': [0.0, 0.0, 2.5, 5.0, 1.2, 0.0, 0.0],
+          'precipitation_probability_max': [0, 10, 60, 80, 40, 0, 0],
+          'wind_speed_10m_max': [15.0, 18.0, 22.0, 25.0, 16.0, 12.0, 14.0],
+        };
 
-      final daily = DailyForecast.fromOpenMeteoJson(json);
-      expect(daily.days.length, 7);
-      expect(daily.getFiveDayForecast().length, 5);
-      expect(daily.days[0].date, '2026-10-14');
-      expect(daily.days[0].maxTemp, 20.0);
-      expect(daily.days[0].minTemp, 10.0);
-      expect(daily.days[3].weatherCode, 61);
-      expect(daily.days[3].precipitationSum, 5.0);
-    });
+        final daily = DailyForecast.fromOpenMeteoJson(json);
+        expect(daily.days.length, 7);
+        expect(daily.getFiveDayForecast().length, 5);
+        expect(daily.days[0].date, '2026-10-14');
+        expect(daily.days[0].maxTemp, 20.0);
+        expect(daily.days[0].minTemp, 10.0);
+        expect(daily.days[3].weatherCode, 61);
+        expect(daily.days[3].precipitationSum, 5.0);
+      },
+    );
 
     test('CityLocation parses geocoding JSON properly', () {
       final json = {

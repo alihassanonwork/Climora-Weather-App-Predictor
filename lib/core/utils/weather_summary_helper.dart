@@ -25,7 +25,7 @@ class WeatherSummaryHelper {
   static String generateSummary({
     required CurrentWeather current,
     required DailyForecastDay? todayForecast,
-    required UserSettings settings,
+    UserSettings settings = const UserSettings(),
   }) {
     final condition = WeatherInterpreter.interpret(current.weatherCode);
     final tempStr = UnitConverter.formatTemperature(
@@ -40,9 +40,9 @@ class WeatherSummaryHelper {
     final buffer = StringBuffer();
 
     // 1. Current condition and thermal sensation
-    buffer.write('\ with a current temperature of ');
+    buffer.write('${condition.description} with a current temperature of $tempStr');
     if ((current.temperature - current.apparentTemperature).abs() >= 2.0) {
-      buffer.write(' (feels like \)');
+      buffer.write(' (feels like $feelsLikeStr)');
     }
     buffer.write('. ');
 
@@ -56,37 +56,43 @@ class WeatherSummaryHelper {
         todayForecast.minTemp,
         settings.temperatureUnit,
       );
-      buffer.write("Today's high is forecast at \ with an overnight low of \. ");
+      buffer.write(
+        "Today's high is forecast at $highStr with an overnight low of $lowStr. ",
+      );
     }
 
     // 3. Rain / Precipitation insights
     if (current.precipitation > 0.0) {
-      final precipStr = UnitConverter.formatPrecipitation(
+      final precipStr = UnitConverter.formatRain(
         current.precipitation,
         settings.precipitationUnit,
       );
-      buffer.write('Precipitation of \ is currently being recorded. ');
+      buffer.write('Precipitation of $precipStr is currently being recorded. ');
     } else if (todayForecast != null &&
         (todayForecast.precipitationProbabilityMax ?? 0) >= 40) {
       buffer.write(
-        'There is a \% chance of rain today. An umbrella is recommended. ',
+        'There is a ${todayForecast.precipitationProbabilityMax}% chance of rain today. An umbrella is recommended. ',
       );
     } else {
-      buffer.write('No significant precipitation is expected in the immediate forecast. ');
+      buffer.write(
+        'No significant precipitation is expected in the immediate forecast. ',
+      );
     }
 
     // 4. Wind insights
     if (current.windSpeed >= 35.0) {
-      final windStr = UnitConverter.formatWindSpeed(
+      final windStr = UnitConverter.formatWind(
         current.windSpeed,
         settings.windSpeedUnit,
       );
-      buffer.write('Brisk winds blowing up to \. ');
+      buffer.write('Brisk winds blowing up to $windStr. ');
     }
 
     // 5. UV insight
     if (current.uvIndex != null && current.uvIndex! >= 6.0) {
-      buffer.write('High UV radiation levels detected; consider sun protection.');
+      buffer.write(
+        'High UV radiation levels detected; consider sun protection.',
+      );
     }
 
     return buffer.toString().trim();
@@ -152,4 +158,18 @@ class WeatherSummaryHelper {
 
     return notices;
   }
+
+  /// Returns the first primary severe notice message if any notice is triggered.
+  static String? getSevereNotice({
+    required CurrentWeather current,
+    required DailyForecastDay? todayForecast,
+  }) {
+    final notices = detectNotices(
+      current: current,
+      todayForecast: todayForecast,
+    );
+    if (notices.isEmpty) return null;
+    return '${notices.first.title}: ${notices.first.description}';
+  }
 }
+

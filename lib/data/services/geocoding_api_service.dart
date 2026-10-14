@@ -11,10 +11,13 @@ class GeocodingApiService {
   final http.Client _client;
 
   GeocodingApiService({http.Client? client})
-      : _client = client ?? http.Client();
+    : _client = client ?? http.Client();
 
   /// Searches for matching global cities given a text query string.
-  Future<List<CityLocation>> searchCities(String query, {int count = 10}) async {
+  Future<List<CityLocation>> searchCities(
+    String query, {
+    int count = 10,
+  }) async {
     final trimmed = query.trim();
     if (trimmed.isEmpty) return [];
 
@@ -25,12 +28,12 @@ class GeocodingApiService {
       'format': 'json',
     };
 
-    final uri = Uri.parse(AppConfig.geocodingBaseUrl)
-        .replace(queryParameters: queryParameters);
+    final uri = Uri.parse(
+      AppConfig.geocodingBaseUrl,
+    ).replace(queryParameters: queryParameters);
 
     try {
-      final response =
-          await _client.get(uri).timeout(AppConfig.apiTimeout);
+      final response = await _client.get(uri).timeout(AppConfig.apiTimeout);
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> json =
@@ -41,8 +44,7 @@ class GeocodingApiService {
         }
 
         return results
-            .map((item) =>
-                CityLocation.fromJson(item as Map<String, dynamic>))
+            .map((item) => CityLocation.fromJson(item as Map<String, dynamic>))
             .toList();
       } else {
         throw ApiException(
@@ -56,10 +58,10 @@ class GeocodingApiService {
     } on TimeoutException {
       throw const NetworkException('City search timed out.');
     } on FormatException catch (e) {
-      throw ApiException('Malformed geocoding response: ');
+      throw ApiException('Malformed geocoding response: $e');
     } catch (e) {
       if (e is AppException) rethrow;
-      throw ApiException('Failed to search locations: ');
+      throw ApiException('Failed to search locations: $e');
     }
   }
 
@@ -67,3 +69,4 @@ class GeocodingApiService {
     _client.close();
   }
 }
+

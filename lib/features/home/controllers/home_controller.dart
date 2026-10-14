@@ -59,8 +59,8 @@ class FavoriteCitiesNotifier extends Notifier<List<CityLocation>> {
 
 final favoriteCitiesProvider =
     NotifierProvider<FavoriteCitiesNotifier, List<CityLocation>>(
-  FavoriteCitiesNotifier.new,
-);
+      FavoriteCitiesNotifier.new,
+    );
 
 class SelectedCityNotifier extends Notifier<CityLocation> {
   @override
@@ -77,8 +77,8 @@ class SelectedCityNotifier extends Notifier<CityLocation> {
 
 final selectedCityProvider =
     NotifierProvider<SelectedCityNotifier, CityLocation>(
-  SelectedCityNotifier.new,
-);
+      SelectedCityNotifier.new,
+    );
 
 class WeatherController extends AsyncNotifier<WeatherData> {
   @override
@@ -110,5 +110,5 @@ class WeatherController extends AsyncNotifier<WeatherData> {
 
 final weatherControllerProvider =
     AsyncNotifierProvider<WeatherController, WeatherData>(
-  WeatherController.new,
-);
+      WeatherController.new,
+    );

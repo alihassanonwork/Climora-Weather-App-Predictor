@@ -34,10 +34,7 @@ void main() {
 
     test('converts and formats wind speed correctly', () {
       // 36 km/h = 10 m/s
-      expect(
-        UnitConverter.convertWindSpeed(36.0, WindSpeedUnit.ms),
-        10.0,
-      );
+      expect(UnitConverter.convertWindSpeed(36.0, WindSpeedUnit.ms), 10.0);
       // 100 km/h = ~62.14 mph
       expect(
         UnitConverter.convertWindSpeed(100.0, WindSpeedUnit.mph),
@@ -48,17 +45,11 @@ void main() {
         UnitConverter.formatWindSpeed(15.5, WindSpeedUnit.kmh),
         '15.5 km/h',
       );
-      expect(
-        UnitConverter.formatWindSpeed(null, WindSpeedUnit.kmh),
-        '--',
-      );
+      expect(UnitConverter.formatWindSpeed(null, WindSpeedUnit.kmh), '--');
     });
 
     test('converts and formats pressure correctly', () {
-      expect(
-        UnitConverter.convertPressure(1013.25, PressureUnit.hPa),
-        1013.25,
-      );
+      expect(UnitConverter.convertPressure(1013.25, PressureUnit.hPa), 1013.25);
       expect(
         UnitConverter.convertPressure(1000.0, PressureUnit.mmHg),
         closeTo(750.06, 0.1),
@@ -67,10 +58,7 @@ void main() {
         UnitConverter.formatPressure(1015.0, PressureUnit.hPa),
         '1015 hPa',
       );
-      expect(
-        UnitConverter.formatPressure(null, PressureUnit.hPa),
-        '--',
-      );
+      expect(UnitConverter.formatPressure(null, PressureUnit.hPa), '--');
     });
 
     test('converts and formats precipitation correctly', () {

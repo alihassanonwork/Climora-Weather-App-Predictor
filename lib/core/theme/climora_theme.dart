@@ -114,9 +114,7 @@ class ClimoraTheme {
           textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
         ),
       ),
-      iconTheme: const IconThemeData(
-        color: ClimoraColors.textPrimaryLight,
-      ),
+      iconTheme: const IconThemeData(color: ClimoraColors.textPrimaryLight),
     );
   }
 
@@ -229,9 +227,7 @@ class ClimoraTheme {
           textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
         ),
       ),
-      iconTheme: const IconThemeData(
-        color: ClimoraColors.textPrimaryDark,
-      ),
+      iconTheme: const IconThemeData(color: ClimoraColors.textPrimaryDark),
     );
   }
 }

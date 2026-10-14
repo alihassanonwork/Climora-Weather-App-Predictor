@@ -1,3 +1,6 @@
+import '../../core/utils/weather_interpreter.dart';
+import 'weather_condition.dart';
+
 /// Single hour forecast item.
 class HourlyForecastItem {
   final String time;
@@ -17,6 +20,10 @@ class HourlyForecastItem {
     required this.windSpeed,
     this.uvIndex,
   });
+
+  DateTime get dateTime => DateTime.tryParse(time) ?? DateTime.now();
+  WeatherCondition get condition =>
+      WeatherInterpreter.interpret(weatherCode, isDay: true);
 
   factory HourlyForecastItem.fromJson(Map<String, dynamic> json) {
     return HourlyForecastItem(
@@ -67,18 +74,16 @@ class HourlyForecast {
           temperature: i < temps.length ? (temps[i] as num).toDouble() : 0.0,
           relativeHumidity:
               i < humidities.length ? (humidities[i] as num).toInt() : 0,
-          precipitationProbability: i < precipProbs.length
-              ? (precipProbs[i] as num?)?.toInt() ?? 0
-              : 0,
-          weatherCode: i < weatherCodes.length
-              ? (weatherCodes[i] as num).toInt()
-              : 0,
-          windSpeed: i < windSpeeds.length
-              ? (windSpeeds[i] as num).toDouble()
-              : 0.0,
-          uvIndex: i < uvIndices.length
-              ? (uvIndices[i] as num?)?.toDouble()
-              : null,
+          precipitationProbability:
+              i < precipProbs.length
+                  ? (precipProbs[i] as num?)?.toInt() ?? 0
+                  : 0,
+          weatherCode:
+              i < weatherCodes.length ? (weatherCodes[i] as num).toInt() : 0,
+          windSpeed:
+              i < windSpeeds.length ? (windSpeeds[i] as num).toDouble() : 0.0,
+          uvIndex:
+              i < uvIndices.length ? (uvIndices[i] as num?)?.toDouble() : null,
         ),
       );
     }
@@ -89,16 +94,17 @@ class HourlyForecast {
   factory HourlyForecast.fromJson(Map<String, dynamic> json) {
     final rawItems = json['items'] as List? ?? [];
     return HourlyForecast(
-      items: rawItems
-          .map((e) => HourlyForecastItem.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      items:
+          rawItems
+              .map(
+                (e) => HourlyForecastItem.fromJson(e as Map<String, dynamic>),
+              )
+              .toList(),
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'items': items.map((e) => e.toJson()).toList(),
-    };
+    return {'items': items.map((e) => e.toJson()).toList()};
   }
 
   /// Returns hourly items within a window starting from the current time.
@@ -120,3 +126,4 @@ class HourlyForecast {
     return items.skip(startIndex).take(count).toList();
   }
 }
+

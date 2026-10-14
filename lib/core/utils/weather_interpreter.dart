@@ -7,7 +7,7 @@ class WeatherInterpreter {
   WeatherInterpreter._();
 
   /// Maps a WMO code to human-readable condition, category, icons, and accent colors.
-  static WeatherConditionInfo interpret(int? code) {
+  static WeatherConditionInfo interpret(int? code, {bool isDay = true}) {
     if (code == null) {
       return const WeatherConditionInfo(
         code: -1,
@@ -275,7 +275,7 @@ class WeatherInterpreter {
       default:
         return WeatherConditionInfo(
           code: code,
-          description: 'Code ',
+          description: 'Code $code',
           category: WeatherCategory.unknown,
           dayIcon: Icons.cloud_outlined,
           nightIcon: Icons.cloud_outlined,
@@ -286,7 +286,8 @@ class WeatherInterpreter {
 
   /// Categorizes UV index with health guidance and warning level.
   static ({String label, String guidance, Color color}) interpretUvIndex(
-      double? uv) {
+    double? uv,
+  ) {
     if (uv == null) {
       return (
         label: 'Unknown',
@@ -326,4 +327,13 @@ class WeatherInterpreter {
       );
     }
   }
+
+  static String getUvCategory(double uv) {
+    return interpretUvIndex(uv).label;
+  }
+
+  static String getUvAdvice(double uv) {
+    return interpretUvIndex(uv).guidance;
+  }
 }
+

@@ -68,8 +68,7 @@ class WeatherData {
   factory WeatherData.fromJson(Map<String, dynamic> json) {
     return WeatherData(
       city: CityLocation.fromJson(json['city'] as Map<String, dynamic>),
-      current:
-          CurrentWeather.fromJson(json['current'] as Map<String, dynamic>),
+      current: CurrentWeather.fromJson(json['current'] as Map<String, dynamic>),
       hourly: HourlyForecast.fromJson(json['hourly'] as Map<String, dynamic>),
       daily: DailyForecast.fromJson(json['daily'] as Map<String, dynamic>),
       timezone: json['timezone'] as String? ?? 'UTC',

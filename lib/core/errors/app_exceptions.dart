@@ -13,7 +13,8 @@ abstract class AppException implements Exception {
 /// Thrown when network connection is unavailable or timeout occurs.
 class NetworkException extends AppException {
   const NetworkException([
-    super.message = 'Unable to reach the weather service. Please check your internet connection.',
+    super.message =
+        'Unable to reach the weather service. Please check your internet connection.',
   ]) : super(code: null);
 }
 
@@ -44,7 +45,6 @@ class LocationException extends AppException {
 
 /// Thrown when local cache reading or writing fails.
 class CacheException extends AppException {
-  const CacheException([
-    super.message = 'Failed to load cached weather data.',
-  ]) : super(code: null);
+  const CacheException([super.message = 'Failed to load cached weather data.'])
+    : super(code: null);
 }
