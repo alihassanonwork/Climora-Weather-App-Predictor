@@ -17,7 +17,7 @@ void main() {
         rain: 0.0,
         showers: 0.0,
         snowfall: 0.0,
-        weatherCode: 0, // Clear sky
+        weatherCode: 0,
         surfacePressure: 1018.0,
         windSpeed: 12.0,
         windDirection: 90.0,
@@ -41,8 +41,8 @@ void main() {
       );
 
       expect(summary, contains('Clear sky'));
-      expect(summary, contains('24°C'));
-      expect(summary, contains("Today's high is forecast at 26°C"));
+      expect(summary, contains('24\u00B0C'));
+      expect(summary, contains("Today's high is forecast at 26\u00B0C"));
     });
 
     test('detects advisories for high winds, extreme UV, and heavy rain', () {
@@ -58,9 +58,9 @@ void main() {
         snowfall: 0.0,
         weatherCode: 95,
         surfacePressure: 1005.0,
-        windSpeed: 65.0, // High wind
+        windSpeed: 65.0,
         windDirection: 220.0,
-        uvIndex: 9.0, // Elevated UV
+        uvIndex: 9.0,
       );
 
       const severeToday = DailyForecastDay(
@@ -68,7 +68,7 @@ void main() {
         weatherCode: 95,
         maxTemp: 32.0,
         minTemp: 22.0,
-        precipitationSum: 30.0, // Heavy rain
+        precipitationSum: 30.0,
         precipitationProbabilityMax: 95,
         maxWindSpeed: 65.0,
       );

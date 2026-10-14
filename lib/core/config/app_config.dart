@@ -21,5 +21,7 @@ class AppConfig {
   // Attribution
   static const String weatherProviderAttribution =
       'Weather data provided by Open-Meteo (open-meteo.com)';
+  static const String openMeteoAttribution = weatherProviderAttribution;
   static const String weatherProviderUrl = 'https://open-meteo.com/';
 }
+

@@ -20,11 +20,11 @@ void main() {
 
       expect(
         UnitConverter.formatTemperature(22.4, TemperatureUnit.celsius),
-        '22°C',
+        '22\u00B0C',
       );
       expect(
         UnitConverter.formatTemperature(22.4, TemperatureUnit.fahrenheit),
-        '72°F',
+        '72\u00B0F',
       );
       expect(
         UnitConverter.formatTemperature(null, TemperatureUnit.celsius),
@@ -33,9 +33,7 @@ void main() {
     });
 
     test('converts and formats wind speed correctly', () {
-      // 36 km/h = 10 m/s
       expect(UnitConverter.convertWindSpeed(36.0, WindSpeedUnit.ms), 10.0);
-      // 100 km/h = ~62.14 mph
       expect(
         UnitConverter.convertWindSpeed(100.0, WindSpeedUnit.mph),
         closeTo(62.137, 0.01),

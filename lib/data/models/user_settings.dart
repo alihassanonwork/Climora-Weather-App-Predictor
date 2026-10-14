@@ -1,6 +1,6 @@
 enum TemperatureUnit {
-  celsius('?C', 'Celsius'),
-  fahrenheit('?F', 'Fahrenheit');
+  celsius('\u00B0C', 'Celsius'),
+  fahrenheit('\u00B0F', 'Fahrenheit');
 
   final String symbol;
   final String label;
@@ -131,3 +131,4 @@ class UserSettings {
       precipitationUnit.hashCode ^
       themePreference.hashCode;
 }
+

@@ -59,7 +59,7 @@ class LocationService {
           admin1: null,
         );
       }
-      throw LocationException('Failed to determine location: ');
+      throw LocationException('Failed to determine location: $e');
     }
   }
 

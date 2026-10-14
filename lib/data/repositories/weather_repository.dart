@@ -47,7 +47,7 @@ class WeatherRepository {
         return cached.copyWith(isCached: true);
       }
       if (e is AppException) rethrow;
-      throw ApiException('Failed to retrieve weather data: ');
+      throw ApiException('Failed to retrieve weather data: $e');
     }
   }
 

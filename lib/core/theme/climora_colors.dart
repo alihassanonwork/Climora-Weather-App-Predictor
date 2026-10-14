@@ -15,6 +15,7 @@ class ClimoraColors {
   static const Color skyLight = Color(0xFF38BDF8);
   static const Color skyLighter = Color(0xFFBAE6FD);
   static const Color skyAccent = Color(0xFF00B4D8);
+  static const Color skyBlue = Color(0xFF0284C7);
 
   // Backgrounds
   static const Color backgroundLight = Color(0xFFF1F5F9);
@@ -44,6 +45,11 @@ class ClimoraColors {
   static const Color uvHigh = Color(0xFFF97316);
   static const Color uvModerate = Color(0xFFFBBF24);
   static const Color uvLow = Color(0xFF10B981);
+
+  static const Color accentCoral = Color(0xFFEF4444);
+  static const Color accentGold = Color(0xFFFBBF24);
+  static const Color tealAccent = Color(0xFF0D9488);
+  static const Color oceanBlue = Color(0xFF1D4ED8);
 
   // Borders & Dividers
   static const Color borderLight = Color(0xFFE2E8F0);
@@ -87,4 +93,27 @@ class ClimoraColors {
     end: Alignment.bottomRight,
     colors: [Color(0xFF18181B), Color(0xFF27272A), Color(0xFF4C1D95)],
   );
+
+  static List<Color> getWeatherGradient(int weatherCode, {bool isDay = true}) {
+    if (!isDay) {
+      return const [Color(0xFF0F172A), Color(0xFF1E293B), Color(0xFF334155)];
+    }
+    if (weatherCode == 0 || weatherCode == 1) {
+      return const [Color(0xFF0284C7), Color(0xFF38BDF8)];
+    }
+    if (weatherCode == 2 || weatherCode == 3) {
+      return const [Color(0xFF1E293B), Color(0xFF475569)];
+    }
+    if (weatherCode >= 51 && weatherCode <= 67) {
+      return const [Color(0xFF1E3A8A), Color(0xFF3B82F6)];
+    }
+    if (weatherCode >= 71 && weatherCode <= 86) {
+      return const [Color(0xFF1E293B), Color(0xFF60A5FA)];
+    }
+    if (weatherCode >= 95) {
+      return const [Color(0xFF18181B), Color(0xFF4C1D95)];
+    }
+    return const [Color(0xFF0284C7), Color(0xFF38BDF8)];
+  }
 }
+

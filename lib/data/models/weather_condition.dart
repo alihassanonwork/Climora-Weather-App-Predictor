@@ -66,4 +66,8 @@ class WeatherConditionInfo {
   });
 
   IconData getIcon(bool isDay) => isDay ? dayIcon : nightIcon;
+  String get iconPath => '';
 }
+
+typedef WeatherCondition = WeatherConditionInfo;
+
