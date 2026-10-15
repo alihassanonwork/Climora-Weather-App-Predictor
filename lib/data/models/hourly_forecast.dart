@@ -126,4 +126,3 @@ class HourlyForecast {
     return items.skip(startIndex).take(count).toList();
   }
 }
-

@@ -81,9 +81,10 @@ class CityLocation {
 
   factory CityLocation.fromJson(Map<String, dynamic> json) {
     return CityLocation(
-      id: json['id'] is int
-          ? json['id'] as int
-          : (json['id'] as num?)?.toInt() ?? 0,
+      id:
+          json['id'] is int
+              ? json['id'] as int
+              : (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? 'Unknown Location',
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
@@ -108,4 +109,3 @@ class CityLocation {
   @override
   int get hashCode => id.hashCode ^ latitude.hashCode ^ longitude.hashCode;
 }
-
