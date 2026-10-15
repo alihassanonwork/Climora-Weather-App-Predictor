@@ -69,4 +69,3 @@ class GeocodingApiService {
     _client.close();
   }
 }
-

@@ -27,8 +27,7 @@ class ClimoraCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final defaultBg =
-        isDark ? ClimoraColors.cardDark : ClimoraColors.cardLight;
+    final defaultBg = isDark ? ClimoraColors.cardDark : ClimoraColors.cardLight;
     final defaultBorder = Border.all(
       color: isDark ? ClimoraColors.borderDark : ClimoraColors.borderLight,
       width: 1,
@@ -44,9 +43,10 @@ class ClimoraCard extends StatelessWidget {
         border: border ?? defaultBorder,
         boxShadow: [
           BoxShadow(
-            color: isDark
-                ? Colors.black.withAlpha(50)
-                : const Color(0xFF0F172A).withAlpha(12),
+            color:
+                isDark
+                    ? Colors.black.withAlpha(50)
+                    : const Color(0xFF0F172A).withAlpha(12),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -69,4 +69,3 @@ class ClimoraCard extends StatelessWidget {
     return content;
   }
 }
-

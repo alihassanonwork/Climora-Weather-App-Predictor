@@ -116,4 +116,3 @@ class ClimoraColors {
     return const [Color(0xFF0284C7), Color(0xFF38BDF8)];
   }
 }
-

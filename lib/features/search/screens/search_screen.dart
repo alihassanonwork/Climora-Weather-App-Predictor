@@ -44,12 +44,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (_) => const Center(
-          child: LoadingView(
-            message: 'Locating your device...',
-            isFullScreen: false,
-          ),
-        ),
+        builder:
+            (_) => const Center(
+              child: LoadingView(
+                message: 'Locating your device...',
+                isFullScreen: false,
+              ),
+            ),
       );
 
       await ref.read(weatherControllerProvider.notifier).useCurrentLocation();
@@ -80,16 +81,16 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final recents = ref.watch(recentSearchesProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Search Locations'),
-        centerTitle: false,
-      ),
+      appBar: AppBar(title: const Text('Search Locations'), centerTitle: false),
       body: SafeArea(
         child: Column(
           children: [
             // Search Input Field
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
               child: TextField(
                 controller: _textController,
                 autofocus: true,
@@ -103,20 +104,25 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     Icons.search_rounded,
                     color: ClimoraColors.skyBlue,
                   ),
-                  suffixIcon: _textController.text.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.clear_rounded),
-                          onPressed: () {
-                            _textController.clear();
-                            ref.read(citySearchControllerProvider.notifier).clearQuery();
-                            setState(() {});
-                          },
-                        )
-                      : null,
+                  suffixIcon:
+                      _textController.text.isNotEmpty
+                          ? IconButton(
+                            icon: const Icon(Icons.clear_rounded),
+                            onPressed: () {
+                              _textController.clear();
+                              ref
+                                  .read(citySearchControllerProvider.notifier)
+                                  .clearQuery();
+                              setState(() {});
+                            },
+                          )
+                          : null,
                 ),
                 onChanged: (val) {
                   setState(() {});
-                  ref.read(citySearchControllerProvider.notifier).onQueryChanged(val);
+                  ref
+                      .read(citySearchControllerProvider.notifier)
+                      .onQueryChanged(val);
                 },
               ),
             ),
@@ -171,7 +177,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       if (searchState.results.isEmpty) {
         return const EmptyView(
           title: 'No Locations Found',
-          message: 'Check your spelling or try searching for a major nearby city or country.',
+          message:
+              'Check your spelling or try searching for a major nearby city or country.',
         );
       }
 
@@ -181,7 +188,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         separatorBuilder: (_, __) => const SizedBox(height: 8),
         itemBuilder: (context, index) {
           final city = searchState.results[index];
-          final isFav = favorites.any((f) => f.id == city.id && f.name == city.name);
+          final isFav = favorites.any(
+            (f) => f.id == city.id && f.name == city.name,
+          );
 
           return CitySearchTile(
             city: city,
@@ -201,16 +210,23 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       children: [
         // Current Location Banner
         ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 4,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
             side: BorderSide(
-              color: isDark ? Colors.white12 : Colors.black.withValues(alpha: 0.06),
+              color:
+                  isDark
+                      ? Colors.white12
+                      : Colors.black.withValues(alpha: 0.06),
             ),
           ),
-          tileColor: isDark
-              ? ClimoraColors.navyCard
-              : ClimoraColors.skyBlue.withValues(alpha: 0.08),
+          tileColor:
+              isDark
+                  ? ClimoraColors.navyCard
+                  : ClimoraColors.skyBlue.withValues(alpha: 0.08),
           leading: Container(
             padding: const EdgeInsets.all(8),
             decoration: const BoxDecoration(
@@ -271,7 +287,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 isFavorite: true,
                 onTap: () => _onCitySelected(city),
                 onToggleFavorite: () {
-                  ref.read(favoriteCitiesProvider.notifier).removeFavorite(city);
+                  ref
+                      .read(favoriteCitiesProvider.notifier)
+                      .removeFavorite(city);
                 },
               ),
             );
@@ -303,19 +321,21 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: recents.map((city) {
-              return ActionChip(
-                avatar: const Icon(Icons.history_rounded, size: 16),
-                label: Text(city.name),
-                onPressed: () => _onCitySelected(city),
-                backgroundColor: isDark
-                    ? ClimoraColors.navySurface
-                    : ClimoraColors.skyBlue.withValues(alpha: 0.1),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              );
-            }).toList(),
+            children:
+                recents.map((city) {
+                  return ActionChip(
+                    avatar: const Icon(Icons.history_rounded, size: 16),
+                    label: Text(city.name),
+                    onPressed: () => _onCitySelected(city),
+                    backgroundColor:
+                        isDark
+                            ? ClimoraColors.navySurface
+                            : ClimoraColors.skyBlue.withValues(alpha: 0.1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  );
+                }).toList(),
           ),
           const SizedBox(height: 20),
         ],
@@ -332,26 +352,28 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: AppConstants.popularCities.map((city) {
-            return ActionChip(
-              avatar: const Icon(Icons.location_city_rounded, size: 16),
-              label: Text('${city.name}, ${city.country}'),
-              onPressed: () => _onCitySelected(city),
-              backgroundColor: isDark
-                  ? ClimoraColors.navyCard
-                  : Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(
-                  color: isDark ? Colors.white12 : Colors.black.withValues(alpha: 0.06),
-                ),
-              ),
-            );
-          }).toList(),
+          children:
+              AppConstants.popularCities.map((city) {
+                return ActionChip(
+                  avatar: const Icon(Icons.location_city_rounded, size: 16),
+                  label: Text('${city.name}, ${city.country}'),
+                  onPressed: () => _onCitySelected(city),
+                  backgroundColor:
+                      isDark ? ClimoraColors.navyCard : Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(
+                      color:
+                          isDark
+                              ? Colors.white12
+                              : Colors.black.withValues(alpha: 0.06),
+                    ),
+                  ),
+                );
+              }).toList(),
         ),
         const SizedBox(height: 24),
       ],
     );
   }
 }
-

@@ -51,7 +51,10 @@ class HomeHeader extends StatelessWidget {
                     if (city.isCurrentLocation) ...[
                       const SizedBox(width: 6),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: ClimoraColors.skyBlue.withValues(alpha: 0.18),
                           borderRadius: BorderRadius.circular(6),
@@ -91,7 +94,10 @@ class HomeHeader extends StatelessWidget {
                           city.name,
                           style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: isDark ? Colors.white : ClimoraColors.navyPrimary,
+                            color:
+                                isDark
+                                    ? Colors.white
+                                    : ClimoraColors.navyPrimary,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -101,7 +107,8 @@ class HomeHeader extends StatelessWidget {
                       Icon(
                         Icons.keyboard_arrow_down_rounded,
                         size: 22,
-                        color: isDark ? Colors.white70 : ClimoraColors.navyPrimary,
+                        color:
+                            isDark ? Colors.white70 : ClimoraColors.navyPrimary,
                       ),
                     ],
                   ),
@@ -141,7 +148,10 @@ class HomeHeader extends StatelessWidget {
               const SizedBox(width: 6),
               _buildIconButton(
                 context: context,
-                icon: isRefreshing ? Icons.hourglass_top_rounded : Icons.refresh_rounded,
+                icon:
+                    isRefreshing
+                        ? Icons.hourglass_top_rounded
+                        : Icons.refresh_rounded,
                 tooltip: 'Refresh Weather',
                 onPressed: isRefreshing ? null : onRefreshPressed,
               ),
@@ -171,9 +181,10 @@ class HomeHeader extends StatelessWidget {
       width: 40,
       height: 40,
       decoration: BoxDecoration(
-        color: isDark
-            ? ClimoraColors.navyCard.withValues(alpha: 0.8)
-            : Colors.white.withValues(alpha: 0.9),
+        color:
+            isDark
+                ? ClimoraColors.navyCard.withValues(alpha: 0.8)
+                : Colors.white.withValues(alpha: 0.9),
         shape: BoxShape.circle,
         border: Border.all(
           color: isDark ? Colors.white12 : Colors.black.withValues(alpha: 0.06),
@@ -196,4 +207,3 @@ class HomeHeader extends StatelessWidget {
     );
   }
 }
-

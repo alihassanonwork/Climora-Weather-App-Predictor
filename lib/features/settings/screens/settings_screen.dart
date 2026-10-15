@@ -20,10 +20,7 @@ class SettingsScreen extends ConsumerWidget {
     final favorites = ref.watch(favoriteCitiesProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-        centerTitle: false,
-      ),
+      appBar: AppBar(title: const Text('Settings'), centerTitle: false),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
@@ -42,20 +39,26 @@ class SettingsScreen extends ConsumerWidget {
                     activeColor: ClimoraColors.skyBlue,
                     onChanged: (val) {
                       if (val != null) {
-                        ref.read(settingsControllerProvider.notifier).updateThemePreference(val);
+                        ref
+                            .read(settingsControllerProvider.notifier)
+                            .updateThemePreference(val);
                       }
                     },
                   ),
                   const Divider(height: 1),
                   RadioListTile<ThemePreference>(
                     title: const Text('Light Theme'),
-                    subtitle: const Text('Crisp sky-blue and soft cloud backgrounds'),
+                    subtitle: const Text(
+                      'Crisp sky-blue and soft cloud backgrounds',
+                    ),
                     value: ThemePreference.light,
                     groupValue: settings.themePreference,
                     activeColor: ClimoraColors.skyBlue,
                     onChanged: (val) {
                       if (val != null) {
-                        ref.read(settingsControllerProvider.notifier).updateThemePreference(val);
+                        ref
+                            .read(settingsControllerProvider.notifier)
+                            .updateThemePreference(val);
                       }
                     },
                   ),
@@ -68,7 +71,9 @@ class SettingsScreen extends ConsumerWidget {
                     activeColor: ClimoraColors.skyBlue,
                     onChanged: (val) {
                       if (val != null) {
-                        ref.read(settingsControllerProvider.notifier).updateThemePreference(val);
+                        ref
+                            .read(settingsControllerProvider.notifier)
+                            .updateThemePreference(val);
                       }
                     },
                   ),
@@ -79,7 +84,11 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(height: 24),
 
             // Section 2: Units of Measurement
-            _buildSectionHeader(context, 'Measurement Units', Icons.straighten_rounded),
+            _buildSectionHeader(
+              context,
+              'Measurement Units',
+              Icons.straighten_rounded,
+            ),
             ClimoraCard(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Column(
@@ -131,7 +140,9 @@ class SettingsScreen extends ConsumerWidget {
                       ],
                       onChanged: (val) {
                         if (val != null) {
-                          ref.read(settingsControllerProvider.notifier).updateWindSpeedUnit(val);
+                          ref
+                              .read(settingsControllerProvider.notifier)
+                              .updateWindSpeedUnit(val);
                         }
                       },
                     ),
@@ -161,7 +172,9 @@ class SettingsScreen extends ConsumerWidget {
                       ],
                       onChanged: (val) {
                         if (val != null) {
-                          ref.read(settingsControllerProvider.notifier).updatePressureUnit(val);
+                          ref
+                              .read(settingsControllerProvider.notifier)
+                              .updatePressureUnit(val);
                         }
                       },
                     ),
@@ -197,7 +210,11 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(height: 24),
 
             // Section 3: Manage Saved Locations
-            _buildSectionHeader(context, 'Saved Cities (${favorites.length})', Icons.bookmark_border_rounded),
+            _buildSectionHeader(
+              context,
+              'Saved Cities (${favorites.length})',
+              Icons.bookmark_border_rounded,
+            ),
             if (favorites.isEmpty)
               ClimoraCard(
                 padding: const EdgeInsets.all(20),
@@ -215,30 +232,42 @@ class SettingsScreen extends ConsumerWidget {
               ClimoraCard(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Column(
-                  children: favorites.map((city) {
-                    return ListTile(
-                      title: Text(city.name),
-                      subtitle: Text(city.subTitle),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete_outline_rounded, color: ClimoraColors.accentCoral),
-                        tooltip: 'Remove',
-                        onPressed: () {
-                          ref.read(favoriteCitiesProvider.notifier).removeFavorite(city);
-                        },
-                      ),
-                      onTap: () {
-                        ref.read(selectedCityProvider.notifier).selectCity(city);
-                        Navigator.of(context).pop();
-                      },
-                    );
-                  }).toList(),
+                  children:
+                      favorites.map((city) {
+                        return ListTile(
+                          title: Text(city.name),
+                          subtitle: Text(city.subTitle),
+                          trailing: IconButton(
+                            icon: const Icon(
+                              Icons.delete_outline_rounded,
+                              color: ClimoraColors.accentCoral,
+                            ),
+                            tooltip: 'Remove',
+                            onPressed: () {
+                              ref
+                                  .read(favoriteCitiesProvider.notifier)
+                                  .removeFavorite(city);
+                            },
+                          ),
+                          onTap: () {
+                            ref
+                                .read(selectedCityProvider.notifier)
+                                .selectCity(city);
+                            Navigator.of(context).pop();
+                          },
+                        );
+                      }).toList(),
                 ),
               ),
 
             const SizedBox(height: 24),
 
             // Section 4: About & Attribution
-            _buildSectionHeader(context, 'About Climora', Icons.info_outline_rounded),
+            _buildSectionHeader(
+              context,
+              'About Climora',
+              Icons.info_outline_rounded,
+            ),
             ClimoraCard(
               padding: const EdgeInsets.all(18),
               child: Column(
@@ -266,7 +295,10 @@ class SettingsScreen extends ConsumerWidget {
                             AppConfig.appName,
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: isDark ? Colors.white : ClimoraColors.navyPrimary,
+                              color:
+                                  isDark
+                                      ? Colors.white
+                                      : ClimoraColors.navyPrimary,
                             ),
                           ),
                           Text(
@@ -325,7 +357,11 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSectionHeader(BuildContext context, String title, IconData icon) {
+  Widget _buildSectionHeader(
+    BuildContext context,
+    String title,
+    IconData icon,
+  ) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
@@ -348,4 +384,3 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 }
-

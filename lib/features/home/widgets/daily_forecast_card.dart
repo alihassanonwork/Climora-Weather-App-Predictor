@@ -10,17 +10,20 @@ import '../../../shared/widgets/climora_card.dart';
 import '../../../shared/widgets/weather_icon_widget.dart';
 import '../../forecast/screens/day_detail_sheet.dart';
 
-/// 5-Day forecast card with temperature ranges, precipitation indicators, and tap-to-inspect modal.
+/// 5-Day forecast card with temperature ranges, current temperature indicator dot,
+/// precipitation probability, maximum wind speed, and tap-to-inspect daily modal.
 class DailyForecastCard extends StatelessWidget {
   final List<DailyForecastDay> dailyList;
   final List<HourlyForecastItem> allHourly;
   final UserSettings settings;
+  final double? currentTemperature;
 
   const DailyForecastCard({
     super.key,
     required this.dailyList,
     required this.allHourly,
     required this.settings,
+    this.currentTemperature,
   });
 
   @override
@@ -33,7 +36,7 @@ class DailyForecastCard extends StatelessWidget {
     // Take 5 days
     final displayDays = dailyList.take(5).toList();
 
-    // Calculate global min and max for temperature range bar calculation
+    // Calculate global min and max for temperature range bar scale
     double globalMin = double.infinity;
     double globalMax = -double.infinity;
     for (final day in displayDays) {
@@ -73,7 +76,7 @@ class DailyForecastCard extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  'Tap for details',
+                  'Tap for hourly details',
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: isDark ? Colors.white54 : Colors.black45,
                   ),
@@ -114,9 +117,9 @@ class DailyForecastCard extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        // Weekday label
+                        // Weekday & Date Label
                         SizedBox(
-                          width: 84,
+                          width: 80,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -149,47 +152,51 @@ class DailyForecastCard extends StatelessWidget {
                           ),
                         ),
 
-                        // Weather Icon
+                        // Animated / Stylized Weather Icon
                         WeatherIconWidget(
                           iconPath: day.condition.iconPath,
                           size: 28,
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 8),
 
-                        // Precipitation probability if > 0
+                        // Precipitation Chance & Wind
                         SizedBox(
                           width: 48,
                           child:
                               (day.precipitationProbabilityMax != null &&
                                       day.precipitationProbabilityMax! > 0)
-                                  ? Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        Icons.water_drop,
-                                        size: 11,
-                                        color: ClimoraColors.skyBlue,
-                                      ),
-                                      const SizedBox(width: 2),
-                                      Text(
-                                        '${day.precipitationProbabilityMax}%',
-                                        style: theme.textTheme.labelSmall
-                                            ?.copyWith(
-                                              color: ClimoraColors.skyBlue,
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                      ),
-                                    ],
+                                  ? FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    alignment: Alignment.centerLeft,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(
+                                          Icons.water_drop,
+                                          size: 11,
+                                          color: ClimoraColors.skyBlue,
+                                        ),
+                                        const SizedBox(width: 2),
+                                        Text(
+                                          '${day.precipitationProbabilityMax}%',
+                                          style: theme.textTheme.labelSmall
+                                              ?.copyWith(
+                                                color: ClimoraColors.skyBlue,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
                                   )
                                   : const SizedBox.shrink(),
                         ),
 
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 6),
 
-                        // Temperature Min
+                        // Min Temperature
                         SizedBox(
-                          width: 40,
+                          width: 38,
                           child: Text(
                             UnitConverter.formatTemperature(
                               day.temperatureMin,
@@ -198,27 +205,30 @@ class DailyForecastCard extends StatelessWidget {
                             textAlign: TextAlign.right,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: isDark ? Colors.white60 : Colors.black54,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
 
                         const SizedBox(width: 8),
 
-                        // Visual Temperature Bar
+                        // Apple Weather-Style Range Bar with Current Temp Dot Indicator
                         Expanded(
                           child: _TemperatureRangeBar(
                             minTemp: day.temperatureMin,
                             maxTemp: day.temperatureMax,
                             globalMin: globalMin,
                             globalMax: globalMax,
+                            currentTemp: isToday ? currentTemperature : null,
+                            isDark: isDark,
                           ),
                         ),
 
                         const SizedBox(width: 8),
 
-                        // Temperature Max
+                        // Max Temperature
                         SizedBox(
-                          width: 40,
+                          width: 38,
                           child: Text(
                             UnitConverter.formatTemperature(
                               day.temperatureMax,
@@ -252,12 +262,16 @@ class _TemperatureRangeBar extends StatelessWidget {
   final double maxTemp;
   final double globalMin;
   final double globalMax;
+  final double? currentTemp;
+  final bool isDark;
 
   const _TemperatureRangeBar({
     required this.minTemp,
     required this.maxTemp,
     required this.globalMin,
     required this.globalMax,
+    this.currentTemp,
+    required this.isDark,
   });
 
   @override
@@ -275,28 +289,75 @@ class _TemperatureRangeBar extends StatelessWidget {
           totalWidth - barLeft,
         );
 
-        return Container(
-          height: 6,
-          decoration: BoxDecoration(
-            color: Colors.black.withValues(alpha: 0.06),
-            borderRadius: BorderRadius.circular(3),
-          ),
+        // Dot position for current temperature on Today's row
+        double? dotLeft;
+        if (currentTemp != null) {
+          final tempFraction = ((currentTemp! - minTemp) / (maxTemp - minTemp))
+              .clamp(0.0, 1.0);
+          dotLeft = barLeft + (tempFraction * barWidth).clamp(0.0, barWidth);
+        }
+
+        return SizedBox(
+          height: 12,
           child: Stack(
+            alignment: Alignment.centerLeft,
             children: [
+              // Track background
+              Container(
+                height: 5,
+                decoration: BoxDecoration(
+                  color:
+                      isDark
+                          ? Colors.white12
+                          : Colors.black.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(3),
+                ),
+              ),
+
+              // Active Range Gradient
               Positioned(
                 left: barLeft,
                 width: barWidth,
-                top: 0,
-                bottom: 0,
                 child: Container(
+                  height: 5,
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [ClimoraColors.skyBlue, ClimoraColors.accentGold],
+                      colors: [
+                        ClimoraColors.skyBlue,
+                        ClimoraColors.tealAccent,
+                        ClimoraColors.sunGold,
+                        ClimoraColors.accentCoral,
+                      ],
                     ),
                     borderRadius: BorderRadius.circular(3),
                   ),
                 ),
               ),
+
+              // Today's current temperature indicator dot
+              if (dotLeft != null)
+                Positioned(
+                  left: (dotLeft - 4.5).clamp(0.0, totalWidth - 9.0),
+                  child: Container(
+                    width: 9,
+                    height: 9,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color:
+                            isDark ? ClimoraColors.navyDarkest : Colors.black87,
+                        width: 1.5,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.3),
+                          blurRadius: 3,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
             ],
           ),
         );

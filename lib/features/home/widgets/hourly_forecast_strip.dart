@@ -29,9 +29,14 @@ class HourlyForecastStrip extends StatelessWidget {
     // Filter to show next 24 hours starting from current time
     final now = DateTime.now();
     final futureHours =
-        hourlyList.where((h) {
-          return h.dateTime.isAfter(now.subtract(const Duration(minutes: 59)));
-        }).take(24).toList();
+        hourlyList
+            .where((h) {
+              return h.dateTime.isAfter(
+                now.subtract(const Duration(minutes: 59)),
+              );
+            })
+            .take(24)
+            .toList();
 
     final displayHours =
         futureHours.isNotEmpty ? futureHours : hourlyList.take(24).toList();
@@ -184,4 +189,3 @@ class HourlyForecastStrip extends StatelessWidget {
     );
   }
 }
-

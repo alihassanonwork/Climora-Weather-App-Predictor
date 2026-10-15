@@ -40,7 +40,9 @@ class WeatherSummaryHelper {
     final buffer = StringBuffer();
 
     // 1. Current condition and thermal sensation
-    buffer.write('${condition.description} with a current temperature of $tempStr');
+    buffer.write(
+      '${condition.description} with a current temperature of $tempStr',
+    );
     if ((current.temperature - current.apparentTemperature).abs() >= 2.0) {
       buffer.write(' (feels like $feelsLikeStr)');
     }
@@ -172,4 +174,3 @@ class WeatherSummaryHelper {
     return '${notices.first.title}: ${notices.first.description}';
   }
 }
-

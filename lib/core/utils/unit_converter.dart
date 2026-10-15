@@ -132,4 +132,3 @@ class UnitConverter {
     return directions[index % 16];
   }
 }
-

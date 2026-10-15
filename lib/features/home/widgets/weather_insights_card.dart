@@ -242,4 +242,3 @@ class WeatherInsightsCard extends StatelessWidget {
     );
   }
 }
-

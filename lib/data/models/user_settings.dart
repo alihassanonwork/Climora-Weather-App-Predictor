@@ -131,4 +131,3 @@ class UserSettings {
       precipitationUnit.hashCode ^
       themePreference.hashCode;
 }
-

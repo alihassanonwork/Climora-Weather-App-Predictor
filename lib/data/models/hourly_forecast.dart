@@ -10,6 +10,8 @@ class HourlyForecastItem {
   final int weatherCode;
   final double windSpeed;
   final double? uvIndex;
+  final double surfacePressure;
+  final double precipitation;
 
   const HourlyForecastItem({
     required this.time,
@@ -19,6 +21,8 @@ class HourlyForecastItem {
     required this.weatherCode,
     required this.windSpeed,
     this.uvIndex,
+    this.surfacePressure = 1013.25,
+    this.precipitation = 0.0,
   });
 
   DateTime get dateTime => DateTime.tryParse(time) ?? DateTime.now();
@@ -35,6 +39,8 @@ class HourlyForecastItem {
       weatherCode: (json['weatherCode'] as num?)?.toInt() ?? 0,
       windSpeed: (json['windSpeed'] as num?)?.toDouble() ?? 0.0,
       uvIndex: (json['uvIndex'] as num?)?.toDouble(),
+      surfacePressure: (json['surfacePressure'] as num?)?.toDouble() ?? 1013.25,
+      precipitation: (json['precipitation'] as num?)?.toDouble() ?? 0.0,
     );
   }
 
@@ -47,6 +53,8 @@ class HourlyForecastItem {
       'weatherCode': weatherCode,
       'windSpeed': windSpeed,
       'uvIndex': uvIndex,
+      'surfacePressure': surfacePressure,
+      'precipitation': precipitation,
     };
   }
 }
@@ -65,6 +73,8 @@ class HourlyForecast {
     final weatherCodes = json['weather_code'] as List? ?? [];
     final windSpeeds = json['wind_speed_10m'] as List? ?? [];
     final uvIndices = json['uv_index'] as List? ?? [];
+    final pressures = json['surface_pressure'] as List? ?? [];
+    final precips = json['precipitation'] as List? ?? [];
 
     final list = <HourlyForecastItem>[];
     for (int i = 0; i < times.length; i++) {
@@ -84,6 +94,10 @@ class HourlyForecast {
               i < windSpeeds.length ? (windSpeeds[i] as num).toDouble() : 0.0,
           uvIndex:
               i < uvIndices.length ? (uvIndices[i] as num?)?.toDouble() : null,
+          surfacePressure:
+              i < pressures.length ? (pressures[i] as num).toDouble() : 1013.25,
+          precipitation:
+              i < precips.length ? (precips[i] as num).toDouble() : 0.0,
         ),
       );
     }

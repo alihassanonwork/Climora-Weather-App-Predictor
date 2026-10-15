@@ -31,15 +31,17 @@ class EmptyView extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(22),
               decoration: BoxDecoration(
-                color: isDark
-                    ? ClimoraColors.navyCard.withValues(alpha: 0.6)
-                    : ClimoraColors.skyBlue.withValues(alpha: 0.1),
+                color:
+                    isDark
+                        ? ClimoraColors.navyCard.withValues(alpha: 0.6)
+                        : ClimoraColors.skyBlue.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 icon,
                 size: 46,
-                color: isDark ? ClimoraColors.skyBlue : ClimoraColors.navyPrimary,
+                color:
+                    isDark ? ClimoraColors.skyBlue : ClimoraColors.navyPrimary,
               ),
             ),
             const SizedBox(height: 20),
@@ -60,14 +62,10 @@ class EmptyView extends StatelessWidget {
                 height: 1.4,
               ),
             ),
-            if (action != null) ...[
-              const SizedBox(height: 24),
-              action!,
-            ],
+            if (action != null) ...[const SizedBox(height: 24), action!],
           ],
         ),
       ),
     );
   }
 }
-

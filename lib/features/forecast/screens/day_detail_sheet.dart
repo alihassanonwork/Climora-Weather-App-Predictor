@@ -8,6 +8,7 @@ import '../../../data/models/hourly_forecast.dart';
 import '../../../data/models/user_settings.dart';
 import '../../../shared/widgets/climora_card.dart';
 import '../../../shared/widgets/weather_icon_widget.dart';
+import '../../home/widgets/hourly_interactive_chart.dart';
 
 /// Modal bottom sheet or screen showing deep daily details and hourly progression.
 class DayDetailSheet extends StatelessWidget {
@@ -41,11 +42,8 @@ class DayDetailSheet extends StatelessWidget {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder:
-          (context) => DayDetailSheet(
-            day: day,
-            dayHourly: dayHours,
-            settings: settings,
-          ),
+          (context) =>
+              DayDetailSheet(day: day, dayHourly: dayHours, settings: settings),
     );
   }
 
@@ -179,11 +177,10 @@ class DayDetailSheet extends StatelessWidget {
                                   context: context,
                                   icon: Icons.grain_rounded,
                                   label: 'Rain Amount',
-                                  value:
-                                      UnitConverter.formatRain(
-                                        day.precipitationSum,
-                                        settings.precipitationUnit,
-                                      ),
+                                  value: UnitConverter.formatRain(
+                                    day.precipitationSum,
+                                    settings.precipitationUnit,
+                                  ),
                                   color: ClimoraColors.oceanBlue,
                                 ),
                               ),
@@ -197,11 +194,10 @@ class DayDetailSheet extends StatelessWidget {
                                   context: context,
                                   icon: Icons.air_rounded,
                                   label: 'Max Wind',
-                                  value:
-                                      UnitConverter.formatWind(
-                                        day.windSpeedMax,
-                                        settings.windSpeedUnit,
-                                      ),
+                                  value: UnitConverter.formatWind(
+                                    day.windSpeedMax,
+                                    settings.windSpeedUnit,
+                                  ),
                                   color: ClimoraColors.tealAccent,
                                 ),
                               ),
@@ -253,8 +249,13 @@ class DayDetailSheet extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     if (dayHourly.isNotEmpty) ...[
+                      HourlyInteractiveChart(
+                        hourlyList: dayHourly,
+                        settings: settings,
+                      ),
+                      const SizedBox(height: 16),
                       Text(
-                        'Hourly Forecast',
+                        'Hourly Breakdown',
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color:
@@ -394,4 +395,3 @@ class DayDetailSheet extends StatelessWidget {
     );
   }
 }
-

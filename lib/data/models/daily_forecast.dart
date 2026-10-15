@@ -136,4 +136,3 @@ class DailyForecast {
     return days.take(5).toList();
   }
 }
-

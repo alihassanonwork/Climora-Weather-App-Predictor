@@ -24,4 +24,3 @@ class AppConfig {
   static const String openMeteoAttribution = weatherProviderAttribution;
   static const String weatherProviderUrl = 'https://open-meteo.com/';
 }
-

@@ -335,5 +335,126 @@ class WeatherInterpreter {
   static String getUvAdvice(double uv) {
     return interpretUvIndex(uv).guidance;
   }
-}
 
+  /// Calculates atmospheric pressure trend (rising, falling, steady) based on current & 3h past pressure.
+  static ({String label, IconData icon, Color color}) getPressureTrend(
+    double currentPressure,
+    double? pastPressure,
+  ) {
+    if (pastPressure == null) {
+      return (
+        label: 'Steady',
+        icon: Icons.trending_flat_rounded,
+        color: ClimoraColors.oceanBlue,
+      );
+    }
+    final diff = currentPressure - pastPressure;
+    if (diff > 1.0) {
+      return (
+        label: 'Rising',
+        icon: Icons.trending_up_rounded,
+        color: ClimoraColors.tealAccent,
+      );
+    } else if (diff < -1.0) {
+      return (
+        label: 'Falling',
+        icon: Icons.trending_down_rounded,
+        color: ClimoraColors.accentCoral,
+      );
+    } else {
+      return (
+        label: 'Steady',
+        icon: Icons.trending_flat_rounded,
+        color: ClimoraColors.skyBlue,
+      );
+    }
+  }
+
+  /// Categorizes wind speed using the international Beaufort Wind Force Scale.
+  static ({String name, String effect, int force}) getBeaufortScale(
+    double speedKmh,
+  ) {
+    if (speedKmh < 1.0) {
+      return (name: 'Calm', effect: 'Smoke rises vertically', force: 0);
+    } else if (speedKmh <= 5.0) {
+      return (
+        name: 'Light air',
+        effect: 'Smoke drift indicates direction',
+        force: 1,
+      );
+    } else if (speedKmh <= 11.0) {
+      return (
+        name: 'Light breeze',
+        effect: 'Leaves rustle, wind felt on face',
+        force: 2,
+      );
+    } else if (speedKmh <= 19.0) {
+      return (
+        name: 'Gentle breeze',
+        effect: 'Leaves & twigs in constant motion',
+        force: 3,
+      );
+    } else if (speedKmh <= 28.0) {
+      return (
+        name: 'Moderate breeze',
+        effect: 'Small branches move, dust raised',
+        force: 4,
+      );
+    } else if (speedKmh <= 38.0) {
+      return (name: 'Fresh breeze', effect: 'Small trees sway', force: 5);
+    } else if (speedKmh <= 49.0) {
+      return (
+        name: 'Strong breeze',
+        effect: 'Large branches in motion',
+        force: 6,
+      );
+    } else if (speedKmh <= 61.0) {
+      return (name: 'Near gale', effect: 'Whole trees sway', force: 7);
+    } else if (speedKmh <= 74.0) {
+      return (name: 'Gale', effect: 'Twigs break off trees', force: 8);
+    } else if (speedKmh <= 88.0) {
+      return (
+        name: 'Severe gale',
+        effect: 'Slight structural damage',
+        force: 9,
+      );
+    } else {
+      return (
+        name: 'Storm',
+        effect: 'Trees uprooted, widespread damage',
+        force: 10,
+      );
+    }
+  }
+
+  /// Evaluates relative humidity and comfort level.
+  static ({String label, String summary, Color color}) getHumidityCategory(
+    int humidity,
+  ) {
+    if (humidity < 30) {
+      return (
+        label: 'Dry air',
+        summary: 'Low moisture level. Drink water.',
+        color: ClimoraColors.accentGold,
+      );
+    } else if (humidity <= 60) {
+      return (
+        label: 'Comfortable',
+        summary: 'Ideal relative humidity.',
+        color: ClimoraColors.tealAccent,
+      );
+    } else if (humidity <= 75) {
+      return (
+        label: 'Moderate',
+        summary: 'Noticeable moisture in air.',
+        color: ClimoraColors.skyBlue,
+      );
+    } else {
+      return (
+        label: 'High humidity',
+        summary: 'Air feels muggy and sticky.',
+        color: ClimoraColors.oceanBlue,
+      );
+    }
+  }
+}

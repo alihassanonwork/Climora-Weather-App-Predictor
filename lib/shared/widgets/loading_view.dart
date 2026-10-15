@@ -7,11 +7,7 @@ class LoadingView extends StatefulWidget {
   final String? message;
   final bool isFullScreen;
 
-  const LoadingView({
-    super.key,
-    this.message,
-    this.isFullScreen = true,
-  });
+  const LoadingView({super.key, this.message, this.isFullScreen = true});
 
   @override
   State<LoadingView> createState() => _LoadingViewState();
@@ -30,9 +26,10 @@ class _LoadingViewState extends State<LoadingView>
       duration: const Duration(milliseconds: 1400),
     )..repeat(reverse: true);
 
-    _pulseAnimation = Tween<double>(begin: 0.85, end: 1.15).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _pulseAnimation = Tween<double>(
+      begin: 0.85,
+      end: 1.15,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -58,10 +55,7 @@ class _LoadingViewState extends State<LoadingView>
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: const RadialGradient(
-                  colors: [
-                    ClimoraColors.skyBlue,
-                    ClimoraColors.navyPrimary,
-                  ],
+                  colors: [ClimoraColors.skyBlue, ClimoraColors.navyPrimary],
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -103,13 +97,9 @@ class _LoadingViewState extends State<LoadingView>
     );
 
     if (widget.isFullScreen) {
-      return Scaffold(
-        backgroundColor: Colors.transparent,
-        body: content,
-      );
+      return Scaffold(backgroundColor: Colors.transparent, body: content);
     }
 
     return content;
   }
 }
-

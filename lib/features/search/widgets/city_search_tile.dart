@@ -32,7 +32,8 @@ class CitySearchTile extends StatelessWidget {
           color: isDark ? ClimoraColors.navyCard : Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.05),
+            color:
+                isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.05),
           ),
           boxShadow: [
             BoxShadow(
@@ -47,15 +48,17 @@ class CitySearchTile extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: isDark
-                    ? ClimoraColors.navySurface
-                    : ClimoraColors.skyBlue.withValues(alpha: 0.1),
+                color:
+                    isDark
+                        ? ClimoraColors.navySurface
+                        : ClimoraColors.skyBlue.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.location_on_rounded,
                 size: 22,
-                color: isDark ? ClimoraColors.skyBlue : ClimoraColors.navyPrimary,
+                color:
+                    isDark ? ClimoraColors.skyBlue : ClimoraColors.navyPrimary,
               ),
             ),
             const SizedBox(width: 14),
@@ -91,7 +94,8 @@ class CitySearchTile extends StatelessWidget {
                 size: 26,
               ),
               onPressed: onToggleFavorite,
-              tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
+              tooltip:
+                  isFavorite ? 'Remove from favorites' : 'Add to favorites',
             ),
           ],
         ),
@@ -99,4 +103,3 @@ class CitySearchTile extends StatelessWidget {
     );
   }
 }
-

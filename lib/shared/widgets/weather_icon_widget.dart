@@ -45,4 +45,3 @@ class WeatherIconWidget extends StatelessWidget {
     );
   }
 }
-

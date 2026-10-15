@@ -37,7 +37,9 @@ class WeatherApiService {
         'temperature_2m',
         'relative_humidity_2m',
         'precipitation_probability',
+        'precipitation',
         'weather_code',
+        'surface_pressure',
         'wind_speed_10m',
         'uv_index',
       ].join(','),
@@ -91,4 +93,3 @@ class WeatherApiService {
     _client.close();
   }
 }
-

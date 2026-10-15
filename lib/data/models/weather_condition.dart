@@ -70,4 +70,3 @@ class WeatherConditionInfo {
 }
 
 typedef WeatherCondition = WeatherConditionInfo;
-
